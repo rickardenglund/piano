@@ -1,10 +1,9 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <div v-if="!midiChannel">
-      <button  @click="connect">Connect</button>
+      <button @click="connect">Connect</button>
     </div>
-    <div v-else >
-<!--      <button @click="setInstrument">instrument = {{instrument}}</button>-->
+    <div v-else>
       <NoteView :notes="lastNotes"></NoteView>
       <Trainer @play="playNotes"/>
     </div>
@@ -29,9 +28,9 @@
     methods: {
       playNotes(notes) {
         console.log(notes);
-        for(let i = 0; i < notes.length; i++) {
+        for (let i = 0; i < notes.length; i++) {
           console.log('note: ' + notes[i])
-          this.playNoteIn(notes[i], i*500 + i*100);
+          this.playNoteIn(notes[i], i * 500 + i * 100);
         }
       },
       setInstrument() {
@@ -70,17 +69,13 @@
           this.lastNotes.push(note);
           this.$children[1].played(note);
         }
-        //   this.playNote(value.getUint8(3) + 3)
-        // } else if (value.getUint8(2) == 0x80) {
-        //   this.stopNote(value.getUint8(3) + 3)
-        // }
       },
 
       connect() {
         navigator.bluetooth.requestDevice({
-          filters: [{name: 'LX705 MIDI'}],
-          // acceptAllDevices: true,
-          optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
+          filters: [{
+            services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
+          }]
         })
           .then(d => d.gatt.connect())
           .then(server => {

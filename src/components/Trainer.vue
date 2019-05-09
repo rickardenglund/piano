@@ -3,7 +3,6 @@
     <button @click="generate">New Sequence</button>
     <button v-if="sequence.length > 0" @click="repeat">Repeat</button>
     <p>Score: {{score}}</p>
-<!--    <p>{{playedNotes}}</p>-->
     <p v-if="correct()"> Success</p>
     <p v-if="message">{{message}}</p>
 <!--    <p>Sequence: {{sequence}}</p>-->
@@ -12,7 +11,6 @@
 <script>
   export default {
     name: 'Trainer',
-    // props: ['playedNotes'],
     data() {
       return {
         score: 0,
