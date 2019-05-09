@@ -27,9 +27,7 @@
     },
     methods: {
       playNotes(notes) {
-        console.log(notes);
         for (let i = 0; i < notes.length; i++) {
-          console.log('note: ' + notes[i])
           this.playNoteIn(notes[i], i * 500 + i * 100);
         }
       },
@@ -45,13 +43,11 @@
         setTimeout(() => this.play(note), time);
       },
       playNote(note) {
-        console.log('start: ' + note);
         let msg_on = new Uint8Array([0x80, 0x80, 0x93, note, 0x1f]);
         this.midiChannel.writeValue(msg_on);
 
       },
       stopNote(note) {
-        console.log('stop: ' + note);
         let msg_off = new Uint8Array([0x80, 0x80, 0x83, note, 0xff]);
         this.midiChannel.writeValue(msg_off)
           .catch(e => {

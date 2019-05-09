@@ -2,7 +2,7 @@
   <div>
     <button @click="generate">New Sequence</button>
     <button v-if="sequence.length > 0" @click="repeat">Repeat</button>
-    <p>Score: {{score}}</p>
+    <p>score: #{{scores.length}} - {{Math.round(score*100)/100}}⭐️</p>
     <p v-if="correct()"> Success</p>
     <p v-if="message">{{message}}</p>
 <!--    <p>Sequence: {{sequence}}</p>-->
@@ -13,10 +13,16 @@
     name: 'Trainer',
     data() {
       return {
-        score: 0,
+        scores: [],
         sequence: [],
         playedNotes: [],
         message: "",
+      }
+    },
+    computed: {
+      score() {
+        if (this.scores.length == 0 ) return 0;
+        return this.scores.reduce((total, n) => total + n, 0) / this.scores.length
       }
     },
     methods: {
@@ -30,11 +36,16 @@
           s[i] = Math.floor(Math.random()*5 + 65)
         }
         this.sequence = s;
-        this.$emit('play', this.sequence)
+        this.$emit('play', this.sequence);
         this.message = "Play the sequence";
       },
       played(note) {
         this.playedNotes.push(note);
+      },
+      updateScore() {
+        let score =  this.playedNotes.length - this.sequence.length;
+        console.log('score: ' + score);
+        this.scores.push(score)
       },
       correct() {
         for (let i = 0; i < this.playedNotes.length - this.sequence.length + 1; i++) {
@@ -44,10 +55,10 @@
             }
             if (j == this.sequence.length - 1) {
               this.message = "Nice!, wait for next";
-              this.score ++;
+              this.updateScore(this.score);
               this.$emit('play', [65]);
               this.playedNotes = [];
-              setTimeout(() => this.generate(), 2000);
+              setTimeout(() => this.generate(), 1000);
               return true;
             }
           }
