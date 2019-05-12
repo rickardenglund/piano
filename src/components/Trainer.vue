@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <button @click="generate">New Sequence</button>
-    <button v-if="sequence.length > 0" @click="repeat">Repeat</button>
+  <div id="trainer">
     <p>score: #{{scores.length}} - {{Math.round(score*100)/100}} 🎯️</p>
     <p v-if="correct()"> Success</p>
     <p v-if="message">{{message}}</p>
+    <button v-if="sequence.length > 0" @click="repeat">Repeat</button>
+    <button @click="generate">New Sequence</button>
     <!--    <p>Sequence: {{sequence}}</p>-->
   </div>
 </template>
@@ -75,5 +75,7 @@
 
 
 <style scoped>
-
+#trainer {
+  padding:20px;
+}
 </style>

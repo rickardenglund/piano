@@ -138,15 +138,18 @@
 
 <!-- Scoped component css -->
 <!-- It only affect current component -->
-<style scoped>
+<style>
+  body {
+    background-color: antiquewhite;
+  }
+
   #app {
-    text-align: center;
+    margin: 20px;
   }
 
   #app h1 {
     color: #2c3e50;
     font-weight: 300;
-    margin: 0;
   }
 
   .banner {
