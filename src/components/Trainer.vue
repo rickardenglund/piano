@@ -3,9 +3,16 @@
     <p>score: #{{scores.length}} - {{Math.round(score*100)/100}} 🎯️</p>
     <p v-if="correct()"> Success</p>
     <p v-if="message">{{message}}</p>
-    <button v-if="sequence.length > 0" @click="repeat">Repeat</button>
+    <div>
+      <label for="sequence-length">Sequence length:</label>
+      <input id="sequence-length" type="number" min="1" max="20" v-model="sequenceLength"/>
+    </div>
+    <div>
+      <label for="pitch-variation">Pitch variation:</label>
+      <input id="pitch-variation" type="number" min="1" max="20" v-model="pitchVariation"/>
+    </div>
     <button @click="generate">New Sequence</button>
-    <!--    <p>Sequence: {{sequence}}</p>-->
+    <button v-if="sequence.length > 0" @click="repeat">Repeat</button>
   </div>
 </template>
 <script>
@@ -17,6 +24,8 @@
         sequence: [],
         playedNotes: [],
         message: "",
+        sequenceLength: 3,
+        pitchVariation: 5,
       }
     },
     computed: {
@@ -33,9 +42,9 @@
         const majorScaleOffsets = [0, 2, 4, 5, 7, 9, 11];
         console.log('sending');
         let s = [];
-        for (let i = 0; i < 3; i++) {
-          let index = Math.floor(Math.random()*5);
-          s.push(majorScaleOffsets[index] + 60);
+        for (let i = 0; i < this.sequenceLength; i++) {
+          let index = Math.floor(Math.random() * this.pitchVariation);
+          s.push(majorScaleOffsets[index % majorScaleOffsets.length] + 12 * Math.floor(index/majorScaleOffsets.length) + 60);
         }
 
         console.log(s);
@@ -75,7 +84,7 @@
 
 
 <style scoped>
-#trainer {
-  padding:20px;
-}
+  #trainer {
+    padding: 20px;
+  }
 </style>
