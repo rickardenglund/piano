@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div v-if="!midiChannel">
-      <button @click="connect">Connect</button>
+      <button @click="connect">Connect to Bluetooth device</button>
     </div>
     <div v-else>
       <NoteView :notes="lastNotes"></NoteView>
@@ -54,16 +54,30 @@
             console.log(e)
           })
       },
-
+      getTime() {
+        let date = new Date();
+        return date.getTime();
+      },
       charChanged(event) {
         let value = event.target.value;
         let a = [];
+        const messageSize = 4;
 
-        if (value.getUint8(2) == 0x90) {
-          if (this.lastNotes.length > 10) this.lastNotes.shift()
-          let note = value.getUint8(3);
-          this.lastNotes.push(note);
-          this.$children[1].played(note);
+        console.log(value);
+
+        for (let pos = 0; pos + messageSize < event.target.value.byteLength; pos += messageSize) {
+          if (value.getUint8(pos+2) == 0x90) {
+            if (this.lastNotes.length > 20) this.lastNotes.shift();
+            let note = value.getUint8(pos+3);
+            this.lastNotes.push({
+              pitch: note,
+              playTime: this.getTime()
+            });
+            console.log(this.$children);
+
+            // to trainer
+            this.$children[1].played(note);
+          }
         }
       },
 
