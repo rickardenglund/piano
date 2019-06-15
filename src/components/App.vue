@@ -65,15 +65,19 @@
 
         console.log(value);
 
-        for (let pos = 0; pos + messageSize < event.target.value.byteLength; pos += messageSize) {
-          if (value.getUint8(pos+2) == 0x90) {
+        for (let pos = 0; pos + messageSize < event.target.value.byteLength; pos += messageSize) { // all messages
+          if (value.getUint8(pos+2) >> 4 == 9) { // Note on
+            let channel = value.getUint8(pos+2) & 15;
+            let velocity = value.getUint8(pos+4);
+            console.log("Channel: " + channel);
+            console.log("Velocity: " + velocity);
             if (this.lastNotes.length > 20) this.lastNotes.shift();
             let note = value.getUint8(pos+3);
             this.lastNotes.push({
               pitch: note,
-              playTime: this.getTime()
+              playTime: this.getTime(),
+              velocity
             });
-            console.log(this.$children);
 
             // to trainer
             this.$children[1].played(note);

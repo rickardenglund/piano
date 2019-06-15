@@ -62,14 +62,15 @@
         for (let i = 0; i < this.notes.length; i++) {
           let pitch = this.notes[i].pitch;
           let startTime = this.notes[i].playTime;
+          let velocityFactor = this.notes[i].velocity / 125;
           // ctx.fillRect(w * (pitch - LOW_CUT), (height - (now - startTime)/10), w, h);
           ctx.beginPath();
-          ctx.arc(w * ((pitch + 1) - LOW_CUT), (height - (now - startTime) / 20), w / 2, 0, Math.PI * 2);
+          ctx.arc(w * ((pitch + 1) - LOW_CUT), (height - (now - startTime) / 20), (w / 2), 0, Math.PI * 2);
           ctx.closePath();
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = '#777'
+          ctx.lineWidth = 10 * velocityFactor;
+          ctx.strokeStyle = '#333'
           ctx.stroke();
-          ctx.fillStyle = '#cx§aa';
+          ctx.fillStyle = '#cxaa';
           ctx.fill()
         }
 
@@ -86,9 +87,11 @@
       randomNote() {
         let now = this.getTime();
         let randomPitch = Math.floor(Math.random() * 100) + 30;
+        let velocity = Math.floor(Math.random() * 126);
         let note = {
           pitch: randomPitch,
-          playTime: now
+          playTime: now,
+          velocity
         };
         this.notes.push(note);
         if (this.notes.length > 40) this.notes.shift()
