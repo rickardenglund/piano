@@ -53,6 +53,7 @@
         this.message = "Play the sequence";
       },
       played(note) {
+        console.log(note)
         this.playedNotes.push(note);
       },
       updateScore() {

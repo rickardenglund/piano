@@ -6,17 +6,21 @@
     <div v-else>
       <NoteView :notes="lastNotes"></NoteView>
       <Trainer @play="playNotes"/>
+      <ScaleTrainer/>
     </div>
+<!--    <Tests/>-->
   </div>
 </template>
 
 <script>
   import NoteView from './NoteView'
   import Trainer from "./Trainer";
+  import ScaleTrainer from "./ScaleTrainer";
+  import Tests from "./Tests";
 
   export default {
     name: 'app',
-    components: {Trainer, NoteView},
+    components: {Tests, ScaleTrainer, Trainer, NoteView},
     data() {
       return {
         midiChannel: null,
@@ -72,15 +76,18 @@
             console.log("Channel: " + channel);
             console.log("Velocity: " + velocity);
             if (this.lastNotes.length > 20) this.lastNotes.shift();
-            let note = value.getUint8(pos+3);
-            this.lastNotes.push({
-              pitch: note,
+            let pitch = value.getUint8(pos+3);
+            let note = {
+              pitch,
               playTime: this.getTime(),
               velocity
-            });
+            };
+            this.lastNotes.push(note);
 
             // to trainer
-            this.$children[1].played(note);
+            console.log(this.$children[2]);
+            this.$children[1].played(note.pitch);
+            this.$children[2].played(note);
           }
         }
       },
