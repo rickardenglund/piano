@@ -28,8 +28,7 @@
       detectScale() {
         let trainer = new Trainer();
 
-        console.log('Detecting scale:' + this.playedNotes.map((note) => note.pitch));
-        let res = trainer.detectMajorScale(this.playedNotes.map((note) => note.pitch));
+        let res = trainer.detectDoubleMajorScale(this.playedNotes.map((note) => note.pitch));
         if (res) {
           console.log('Major scale found');
           this.playedNotes = [];

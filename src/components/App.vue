@@ -67,14 +67,14 @@
         let a = [];
         const messageSize = 4;
 
-        console.log(value);
+        // console.log(value);
 
         for (let pos = 0; pos + messageSize < event.target.value.byteLength; pos += messageSize) { // all messages
           if (value.getUint8(pos+2) >> 4 == 9) { // Note on
             let channel = value.getUint8(pos+2) & 15;
             let velocity = value.getUint8(pos+4);
-            console.log("Channel: " + channel);
-            console.log("Velocity: " + velocity);
+            // console.log("Channel: " + channel);
+            // console.log("Velocity: " + velocity);
             if (this.lastNotes.length > 20) this.lastNotes.shift();
             let pitch = value.getUint8(pos+3);
             let note = {
@@ -85,7 +85,7 @@
             this.lastNotes.push(note);
 
             // to trainer
-            console.log(this.$children[2]);
+            // console.log(this.$children[2]);
             this.$children[1].played(note.pitch);
             this.$children[2].played(note);
           }
