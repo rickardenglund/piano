@@ -1,3 +1,5 @@
+import getNoteName from './utilities'
+
 export default class Trainer {
   constructor() {
 
@@ -14,8 +16,9 @@ export default class Trainer {
 
   detectDoubleMajorScale(notes) {
     for (let i = 0; i < notes.length; i++) {
-      if (this.isDoubleMajorScale(notes.slice(i, notes.length))) {
-        return true;
+      let res = this.isDoubleMajorScale(notes.slice(i, notes.length));
+      if (res) {
+        return res;
       }
     }
     return false;
@@ -25,10 +28,11 @@ export default class Trainer {
     if (notes.length < 2 * this.majorScaleOffsets.length) return false;
     notes = notes.slice(0, this.majorScaleOffsets.length * 2);
 
-    let tonic = notes[0];
+    let pitches = notes.map((note) => note.pitch);
+    let tonic = pitches[0];
     for (let i = 0; i < this.majorScaleOffsets.length; i++) {
-      if ( !((notes[i*2] === tonic + this.majorScaleOffsets[i] || notes[i*2 + 1] === tonic + this.majorScaleOffsets[i])
-              && Trainer.sameNote(notes[i*2], notes[i*2+1]))
+      if ( !((pitches[i*2] === tonic + this.majorScaleOffsets[i] || pitches[i*2 + 1] === tonic + this.majorScaleOffsets[i])
+              && Trainer.sameNote(pitches[i*2], pitches[i*2+1]))
             ) {
         return false;
       }
@@ -36,7 +40,8 @@ export default class Trainer {
 
     console.log('Double Major scale: ' + tonic);
     console.log(notes);
-    return true;
+    let time = notes[notes.length - 1].playTime - notes[0].playTime;
+    return {scale: getNoteName(tonic), time};
   }
 
   static sameNote(note1, note2) {
