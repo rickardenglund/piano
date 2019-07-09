@@ -1,15 +1,15 @@
 <template>
   <div>
-    <p>Scale trainer</p>
+    <p>Scale trainer: </p>
     <button @click="scalePlayed">Success</button>
     <ol>
       <li v-for="scale in playedScales">
-        {{scale.scale}} : {{scale.time.toFixed(2)}} ms
+        {{scale.scale}} Total time:{{scale.time.toFixed(2)}} ms Velocity Variance: {{scale.velocityVariance.toFixed(2)}}
       </li>
     </ol>
-    <ol>
-      <li v-for="note in playedNotes">{{note}}</li>
-    </ol>
+<!--    <ol>-->
+<!--      <li v-for="note in playedNotes">{{note}}</li>-->
+<!--    </ol>-->
     <transition name="fade">
       <div id="ScalePlayed" v-if="visible">
         <p>Scale: {{lastScale()}}</p>
@@ -19,7 +19,7 @@
 </template>
 <script>
   import Trainer from '../trainer.js'
-  import getNoteName from '../utilities'
+  import {getNoteName} from '../utilities'
 
   export default {
     name: 'ScaleTrainer',
@@ -51,7 +51,7 @@
       scalePlayed(scale) {
         if (!scale) {
           let scaleName = getNoteName(Math.floor(Math.random() * 120));
-          scale = {scale: scaleName, time: 1 + Math.random() * 125};
+          scale = {scale: scaleName, time: 3210};
         }
 
         this.playedScales.push(scale);
@@ -61,7 +61,7 @@
       lastScale() {
         let scale = this.playedScales[this.playedScales.length - 1];
         return scale.scale + ' : ' +
-          scale.time.toFixed() + ' s';
+          scale.time.toFixed() + ' ms';
 
       }
     }

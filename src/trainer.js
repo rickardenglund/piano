@@ -1,4 +1,4 @@
-import getNoteName from './utilities'
+import {getNoteName, getVariance} from './utilities'
 
 export default class Trainer {
   constructor() {
@@ -41,7 +41,7 @@ export default class Trainer {
     console.log('Double Major scale: ' + tonic);
     console.log(notes);
     let time = notes[notes.length - 1].playTime - notes[0].playTime;
-    return {scale: getNoteName(tonic), time};
+    return {scale: getNoteName(tonic), time, velocityVariance: getVariance(notes.map(note => note.velocity))};
   }
 
   static sameNote(note1, note2) {
