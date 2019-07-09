@@ -5,6 +5,7 @@
     <ol>
       <li v-for="scale in playedScales">
         {{scale.scale}} Total time:{{scale.time.toFixed(2)}} ms Velocity Variance: {{scale.velocityVariance.toFixed(2)}}
+        : LeftVariance: {{scale.leftHandVariance.toFixed(0) }} RightVariance: {{scale.rightHandVariance.toFixed(0)}}
       </li>
     </ol>
 <!--    <ol>-->
@@ -54,7 +55,7 @@
           scale = {scale: scaleName, time: 3210};
         }
 
-        this.playedScales.push(scale);
+        this.playedScales.splice(0,0,scale,);
         this.visible = true;
         setTimeout(() => this.visible = false, 1500);
       },

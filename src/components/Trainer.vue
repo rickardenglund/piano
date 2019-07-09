@@ -54,7 +54,10 @@
       },
       played(note) {
         // console.log(note)
+        if (this.playedNotes.length > this.sequence.length) this.playedNotes.shift();
+
         this.playedNotes.push(note);
+
       },
       updateScore() {
         let score = this.playedNotes.length - this.sequence.length;
