@@ -1,5 +1,5 @@
 export function getNoteName(pitch) {
-  const noteNames = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+  const noteNames = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
   return noteNames[pitch % 12];
 }
 
@@ -11,7 +11,7 @@ export function getVariance(numbers) {
 
 }
 
-function getMean(numbers) {
+export function getMean(numbers) {
   return numbers.reduce((a, b) => b + a, 0) / numbers.length;
 }
 

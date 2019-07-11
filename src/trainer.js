@@ -53,8 +53,6 @@ export default class Trainer {
       rightTimes,
       leftHandVariance: getVariance(leftTimes),
       rightHandVariance: getVariance(rightTimes),
-
-
     };
   }
 

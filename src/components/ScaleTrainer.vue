@@ -1,19 +1,11 @@
 <template>
   <div>
-    <p>Scale trainer: </p>
-    <button @click="scalePlayed">Success</button>
-    <ol>
-      <li v-for="scale in playedScales">
-        {{scale.scale}} Total time:{{scale.time.toFixed(2)}} ms Velocity Variance: {{scale.velocityVariance.toFixed(2)}}
-        : LeftVariance: {{scale.leftHandVariance.toFixed(0) }} RightVariance: {{scale.rightHandVariance.toFixed(0)}}
-      </li>
-    </ol>
-<!--    <ol>-->
-<!--      <li v-for="note in playedNotes">{{note}}</li>-->
-<!--    </ol>-->
+    <p>Scale trainer: {{this.playedScales.length}}</p>
+    <button @click="scalePlayed(undefined)">Success</button>
+      <Scale :key="index" :index="index" v-for="(scale, index) in playedScales" :scale="scale"></Scale>
     <transition name="fade">
       <div id="ScalePlayed" v-if="visible">
-        <p>Scale: {{lastScale()}}</p>
+        <Scale :index="cnt" :scale="lastScale()"></Scale>
       </div>
     </transition>
   </div>
@@ -21,14 +13,17 @@
 <script>
   import Trainer from '../trainer.js'
   import {getNoteName} from '../utilities'
+  import Scale from "./Scale"
 
   export default {
     name: 'ScaleTrainer',
+    components: {Scale},
     data() {
       return {
         playedNotes: [],
         playedScales: [],
         visible: false,
+        cnt: 0,
       }
     },
     watch: {
@@ -50,20 +45,32 @@
         }
       },
       scalePlayed(scale) {
+        let times = [];
+        for (let i = 0; i < 14; i++) {
+          times.push(10 + Math.floor(Math.random()*200))
+        }
         if (!scale) {
-          let scaleName = getNoteName(Math.floor(Math.random() * 120));
-          scale = {scale: scaleName, time: 3210};
+          scale = {
+            scale: getNoteName(Math.floor(Math.random() * 120)),
+            time: 3210,
+            splitPitches: [],
+            velocityVariance: 23,//getVariance(notes.map(note => note.velocity)),
+            leftTimes: times,
+            rightTimes: [10, 10, 10, 20, 10, 11, 5, 10, 34, 10],
+            leftHandVariance: 12,//getVariance(leftTimes),
+            rightHandVariance: 34,//getVariance(rightTimes),
+          };
         }
 
-        this.playedScales.splice(0,0,scale,);
+        // this.playedScales.splice(0, 0, scale,);
+        this.playedScales.push(scale);
+        this.cnt++
         this.visible = true;
-        setTimeout(() => this.visible = false, 1500);
+        setTimeout(() => this.visible = false, 3000);
       },
       lastScale() {
         let scale = this.playedScales[this.playedScales.length - 1];
-        return scale.scale + ' : ' +
-          scale.time.toFixed() + ' ms';
-
+        return scale;
       }
     }
 
