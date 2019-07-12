@@ -8,8 +8,8 @@
     </p>
 
     <div v-if="display">
-      <canvas :id="'left'+index" width="600px" height="120px"></canvas>
       <canvas :id="'right'+index" width="600px" height="120px"></canvas>
+      <canvas :id="'left'+index" width="600px" height="120px"></canvas>
     </div>
   </div>
 </template>
@@ -106,6 +106,7 @@
   padding-left: 40px;
   /*padding: 10px;*/
   position: relative;
+  width: 700px;
 }
 
   h2 {

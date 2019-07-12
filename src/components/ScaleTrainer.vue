@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>Scale trainer: {{this.playedScales.length}}</p>
+    <CircleOfFifths :marked="getPlayedScaleNames()"></CircleOfFifths>
     <button @click="scalePlayed(undefined)">Success</button>
       <Scale :key="index" :index="index" v-for="(scale, index) in playedScales" :scale="scale"></Scale>
     <transition name="fade">
@@ -12,12 +13,13 @@
 </template>
 <script>
   import Trainer from '../trainer.js'
-  import {getNoteName} from '../utilities'
+  import {getMean, getNoteName} from '../utilities'
   import Scale from "./Scale"
+  import CircleOfFifths from './CircleOfFifths'
 
   export default {
     name: 'ScaleTrainer',
-    components: {Scale},
+    components: {Scale, CircleOfFifths},
     data() {
       return {
         playedNotes: [],
@@ -32,6 +34,10 @@
       }
     },
     methods: {
+      getPlayedScaleNames() {
+        // return [{name: 'A', status: 'ok'}, {name: 'C', status: 'warning'}, {name: 'Eb', status: 'fail'}];
+        return this.playedScales.map(scale => {return {name: scale.scale, status: this.getStatus(scale)}});
+      },
       played(note) {
         this.playedNotes.push(note);
       },
@@ -56,7 +62,7 @@
             splitPitches: [],
             velocityVariance: 23,//getVariance(notes.map(note => note.velocity)),
             leftTimes: times,
-            rightTimes: [10, 10, 10, 20, 10, 11, 5, 10, 34, 10],
+            rightTimes: [10, 10, 10 + Math.random()*5, 12, 10, 11, 9, 10, 12, 10],
             leftHandVariance: 12,//getVariance(leftTimes),
             rightHandVariance: 34,//getVariance(rightTimes),
           };
@@ -69,8 +75,26 @@
         setTimeout(() => this.visible = false, 3000);
       },
       lastScale() {
-        let scale = this.playedScales[this.playedScales.length - 1];
-        return scale;
+        return this.playedScales[this.playedScales.length - 1];
+      },
+      getStatus(scale) {
+        let fail = false;
+        let rightMean = getMean(scale.rightTimes);
+        scale.rightTimes.forEach(t => {
+          if (Math.abs(t - rightMean) > 0.2 * rightMean) {
+            fail = true;
+          }
+        });
+
+        let leftMean = getMean(scale.leftTimes);
+        scale.leftTimes.forEach(t => {
+          if (Math.abs(t - leftMean) > 0.2 * leftMean) {
+            fail = true;
+          }
+        });
+
+
+        return fail? 'fail': 'ok';
       }
     }
 
@@ -84,7 +108,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
   }
 
   .fade-enter-active, .fade-leave-active {
