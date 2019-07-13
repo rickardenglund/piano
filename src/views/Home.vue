@@ -1,6 +1,8 @@
 <template>
   <div class="home">
     <p>Home<p/>
+    <p>State: {{getApa()}}</p>
+    <button @click="inc()">Inc</button>
   </div>
 </template>
 
@@ -11,6 +13,14 @@
 export default {
   name: 'home',
   components: {
+  },
+  methods: {
+    getApa() {
+      return this.$store.state.count;
+    },
+    inc() {
+      this.$store.commit('increment');
+    }
   }
 }
 </script>

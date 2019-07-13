@@ -2,6 +2,11 @@
   <div id="noteview">
     <canvas id="notes"></canvas>
     <button @click="multiNotes()">Draw random notes</button>
+    <ol>
+      <li :key="i" v-for="(note, i) in $store.state.lastNotes">
+        {{note}}
+      </li>
+    </ol>
   </div>
 
 </template>
@@ -9,10 +14,18 @@
 <script>
   export default {
     name: "NoteView",
-    props: ['notes'],
+    data() {
+      return {
+      }
+    },
     mounted() {
       window.requestAnimationFrame(this.draw)
 
+    },
+    computed: {
+      notes() {
+        return this.$store.state.lastNotes.slice(-40);
+      }
     },
     watch: {
       // notes() {
@@ -37,7 +50,7 @@
         const N = 109 - LOW_CUT;
 
         const w = Math.floor(width / N);
-        const h = Math.floor(height / this.notes.length);
+        // const h = Math.floor(height / this.notes.length);
 
         ctx.fillStyle = "#aaa";
         ctx.clearRect(0, 0, width, height);

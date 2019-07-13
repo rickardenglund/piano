@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <PianoConnection></PianoConnection>
     <div id="nav">
       <router-link to="/">View</router-link> |
       <router-link to="/home">Home</router-link> |
@@ -19,3 +20,9 @@
   margin-top: 60px;
 }
 </style>
+<script>
+  import PianoConnection from "./components/PianoConnection";
+  export default {
+    components: {PianoConnection}
+  }
+</script>
