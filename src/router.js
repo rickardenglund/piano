@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import RepeatTrainer from './views/RepeatTrainer.vue'
 import noteview from './views/View.vue'
+import ScaleTrainer from "./views/ScaleTrainer";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -14,9 +15,13 @@ export default new Router({
       name: 'noteview',
       component: noteview
     }, {
-      path: '/home',
-      name: 'home',
-      component: Home
+      path: '/repeatTrainer',
+      name: 'repeatTrainer',
+      component: RepeatTrainer
+    }, {
+      path: '/scaleTrainer',
+      name: 'scaleTrainer',
+      component: ScaleTrainer
     },
     {
       path: '/about',

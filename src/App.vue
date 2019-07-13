@@ -4,7 +4,8 @@
     <div id="nav">
       <router-link to="/">View</router-link> |
       <router-link to="/home">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/repeatTrainer">Repeat Trainer</router-link>
+      <router-link to="/scaleTrainer">Scales</router-link>
     </div>
     <router-view/>
   </div>

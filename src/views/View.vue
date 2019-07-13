@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <h1>View</h1>
-    <VirtualKeyboard></VirtualKeyboard>
     <NoteView></NoteView>
   </div>
 </template>
@@ -11,11 +10,9 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 import NoteView from "../components/NoteView";
-import VirtualKeyboard from "../components/VirtualKeyboard";
 export default {
   name: 'noteview',
   components: {
-    VirtualKeyboard,
     NoteView
   },
   data() {

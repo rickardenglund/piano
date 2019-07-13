@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     count: 0,
     lastNotes: [],
+    midiChannel: undefined,
   },
   mutations: {
     increment(state) {
@@ -14,6 +15,12 @@ export default new Vuex.Store({
     },
     newNote(state, note) {
       state.lastNotes.push(note)
+    },
+    clearNotes(state) {
+      state.lastNotes = [];
+    },
+    setMidiChannel(state, midiChannel) {
+      state.midiChannel = midiChannel;
     }
   },
   actions: {

@@ -28,7 +28,7 @@ export function connect(callback, connectedCallback) {
                   // eslint-disable-next-line no-console
                   console.log('> Notifications started');
                   characteristic.addEventListener('characteristicvaluechanged', callback);
-                  connectedCallback('connected');
+                  connectedCallback('connected', characteristic);
                   return characteristic;
                 });
               }
@@ -55,4 +55,33 @@ function getSupportedProperties(characteristic) {
     }
   }
   return '[' + supportedProperties.join(', ') + ']';
+}
+
+export function playNotes(notes, midiChannel) {
+  for (let i = 0; i < notes.length; i++) {
+    playNoteIn(notes[i], i * 500 + i * 100, midiChannel);
+  }
+}
+// export function setInstrument() {
+//   let setInstrument_msg = new Uint8Array([0x80, 0x80, 0xc3, this.instrument]);
+//   this.midiChannel.writeValue(setInstrument_msg)
+// }
+export function play(note, midiChannel) {
+  playNote(note, midiChannel);
+  setTimeout(() => stopNote(note, midiChannel), 500)
+}
+export function playNoteIn(note, time, midiChannel) {
+  setTimeout(() => play(note, midiChannel), time);
+}
+export function playNote(note, midiChannel) {
+  let msg_on = new Uint8Array([0x80, 0x80, 0x93, note, 0x1f]);
+  midiChannel.writeValue(msg_on);
+
+}
+export function stopNote(note, midiChannel) {
+  let msg_off = new Uint8Array([0x80, 0x80, 0x83, note, 0xff]);
+  midiChannel.writeValue(msg_off)
+                                            .catch(e => {
+                                              console.log(e)
+                                            })
 }
