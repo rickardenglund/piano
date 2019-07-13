@@ -16,11 +16,15 @@
     name: "NoteView",
     data() {
       return {
+        drawingActive: true
       }
     },
     mounted() {
+      this.drawingActive = true;
       window.requestAnimationFrame(this.draw)
-
+    },
+    destroyed() {
+      this.drawingActive = false;
     },
     computed: {
       notes() {
@@ -38,6 +42,7 @@
         return date.getTime();
       },
       draw() {
+        if (!this.drawingActive) return;
         let canvas = document.getElementById("notes");
         let ctx = canvas.getContext("2d");
         canvas.width = 1000;

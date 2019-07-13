@@ -1,4 +1,4 @@
-export function connect(callback) {
+export function connect(callback, connectedCallback) {
   navigator.bluetooth.requestDevice({
     filters: [{
       services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
@@ -28,6 +28,7 @@ export function connect(callback) {
                   // eslint-disable-next-line no-console
                   console.log('> Notifications started');
                   characteristic.addEventListener('characteristicvaluechanged', callback);
+                  connectedCallback('connected');
                   return characteristic;
                 });
               }
@@ -40,6 +41,7 @@ export function connect(callback) {
     .catch(error => {
       // eslint-disable-next-line no-console
       console.log('Argh! ' + error);
+      connectedCallback('not connected');
     });
 
 }
