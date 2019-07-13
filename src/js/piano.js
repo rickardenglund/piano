@@ -81,7 +81,8 @@ export function playNote(note, midiChannel) {
 export function stopNote(note, midiChannel) {
   let msg_off = new Uint8Array([0x80, 0x80, 0x83, note, 0xff]);
   midiChannel.writeValue(msg_off)
-                                            .catch(e => {
-                                              console.log(e)
-                                            })
+      .catch(e => {
+        // eslint-disable-next-line no-console
+        console.log(e)
+      })
 }

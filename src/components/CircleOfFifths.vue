@@ -1,7 +1,7 @@
 <template>
 
   <div class="fifths">
-    <p class="part"
+    <p :key="i" class="part"
        :class="{isMarked: isMarked((i+2)*7), ok: getStatus((i+2)*7) == 'ok', warning: getStatus((i+2)*7) == 'warning', fail: getStatus((i+2)*7) == 'fail'}"
        v-for="i in 12">{{getName((i+2)*7)}}</p>
   </div>
@@ -15,7 +15,7 @@
     props: {
       marked: {
         type: Array,
-        default: []
+        default: () => [],
       }
     },
     methods: {

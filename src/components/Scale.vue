@@ -30,7 +30,7 @@
     mounted() {
       let leftMean = getMean(this.scale.leftTimes);
       let ctx = document.getElementById('left' + this.index);
-      let myChart = new Chart(ctx, {
+      new Chart(ctx, {
         type: 'bar',
         data: {
           labels: this.scale.leftTimes.map((o, index) => {
@@ -64,7 +64,7 @@
 
       let rightMean = getMean(this.scale.rightTimes);
       ctx = document.getElementById('right' + this.index);
-      myChart = new Chart(ctx, {
+      new Chart(ctx, {
         type: 'bar',
         data: {
           labels: this.scale.rightTimes.map((o, index) => {
@@ -108,6 +108,8 @@
   /*padding: 10px;*/
   position: relative;
   width: 700px;
+  /*border: gray solid 3px;*/
+  box-shadow: 12px 10px 45px -9px rgba(0,0,0,0.75);
 }
 
   h2 {

@@ -38,8 +38,9 @@ export default class Trainer {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log('Double Major scale: ' + tonic);
-    console.log(notes);
+    // console.log(notes);
     let time = notes[notes.length - 1].playTime - notes[0].playTime;
     let splitNotes = split(notes);
     let leftTimes = getStepSizes(splitNotes.left.map(a => a.playTime));

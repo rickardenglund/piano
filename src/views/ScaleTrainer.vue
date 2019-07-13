@@ -2,7 +2,7 @@
     <div>
         <p>Scale trainer: {{this.playedScales.length}}</p>
             <CircleOfFifths :marked="getPlayedScaleNames()"></CircleOfFifths>
-        <button @click="scalePlayed(undefined)">Success</button>
+        <button @click="scalePlayed(undefined)">Random scale played</button>
         <Scale :key="index" :index="index" v-for="(scale, index) in playedScales" :scale="scale"></Scale>
         <transition name="fade">
             <div id="ScalePlayed" v-if="visible">
@@ -29,7 +29,6 @@
     },
     watch: {
       playedNotes() {
-        console.log('detecting');
         this.detectScale();
       }
     },
@@ -41,7 +40,6 @@
     },
     methods: {
       getPlayedScaleNames() {
-        // return [{name: 'A', status: 'ok'}, {name: 'C', status: 'warning'}, {name: 'Eb', status: 'fail'}];
         return this.playedScales.map(scale => {
           return {name: scale.scale, status: this.getStatus(scale)}
         });
@@ -74,7 +72,7 @@
 
         // this.playedScales.splice(0, 0, scale,);
         this.playedScales.push(scale);
-        this.cnt++
+        this.cnt++;
         this.visible = true;
         setTimeout(() => this.visible = false, 3000);
       },
@@ -96,8 +94,7 @@
             fail = true;
           }
         });
-
-
+        
         return fail ? 'fail' : 'ok';
       }
     }
