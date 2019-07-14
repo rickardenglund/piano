@@ -7,8 +7,9 @@ export default class Trainer {
 
   detectMajorScale(notes) {
     for (let i = 0; i < notes.length; i++) {
-      if (this.isMajorScale(notes.slice(i, notes.length))) {
-        return true;
+      let res = this.isMajorScale(notes.slice(i, notes.length));
+      if (res) {
+        return res;
       }
     }
     return false;
@@ -66,14 +67,27 @@ export default class Trainer {
 
     notes = notes.slice(0, this.majorScaleOffsets.length);
 
-    let tonic = notes[0];
+    let tonic = notes[0].pitch;
 
     for (let i = 1; i < notes.length; i++) {
-      if (notes[i] != tonic + this.majorScaleOffsets[i]) {
+      if (notes[i].pitch != tonic + this.majorScaleOffsets[i]) {
         return false;
       }
     }
-    return true;
+
+    let time = notes[notes.length - 1].playTime - notes[0].playTime;
+    let rightTimes = getStepSizes(notes.map(a => a.playTime));
+
+    let res = {
+      scale: getNoteName(tonic),
+      time,
+      splitPitches: [],//splitNotes,
+      velocityVariance: getVariance(notes.map(note => note.velocity)),
+      rightTimes,
+      rightHandVariance: getVariance(rightTimes),
+    };
+
+    return res;
   }
 
   majorScaleOffsets = [0, 2, 4, 5, 7, 9, 11, 12, 11, 9, 7, 5, 4, 2, 0];

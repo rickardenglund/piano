@@ -3,7 +3,8 @@
 
     <h2>{{scale.scale}}</h2>
     <p>{{index}} :  Total time:{{scale.time.toFixed(2)}} ms Velocity Variance:
-      {{scale.velocityVariance.toFixed(2)}}
+      {{scale.velocityVariance.toFixed(2)}}</p>
+    <p v-if="scale.splitpitches">
       : LeftVariance: {{scale.leftHandVariance.toFixed(0) }} RightVariance: {{scale.rightHandVariance.toFixed(0)}}
     </p>
 
@@ -28,73 +29,76 @@
     },
     props: ['scale', 'index'],
     mounted() {
-      let leftMean = getMean(this.scale.leftTimes);
-      let ctx = document.getElementById('left' + this.index);
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: this.scale.leftTimes.map((o, index) => {
-            return index
-          }),
-          datasets: [{
-            label: 'Left hand: ' + leftMean,
-            data: this.scale.leftTimes.map(x => {
-              return Math.round(x - leftMean);
+      if (this.scale.leftTimes) {
+        let leftMean = getMean(this.scale.leftTimes);
+        let ctx = document.getElementById('left' + this.index);
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: this.scale.leftTimes.map((o, index) => {
+              return index
             }),
-            backgroundColor: this.scale.leftTimes.map(t => {
-              return Math.abs(t - leftMean) > 0.2 * leftMean ? 'rgba(255, 0, 0, 0.5)' : 'rgba(10, 99, 15, 0.2)'
-            }),
-            // borderColor: [
-            //   'rgba(255, 99, 132, 1)',
-            // ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: false,
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
+            datasets: [{
+              label: 'Left hand: ' + leftMean,
+              data: this.scale.leftTimes.map(x => {
+                return Math.round(x - leftMean);
+              }),
+              backgroundColor: this.scale.leftTimes.map(t => {
+                return Math.abs(t - leftMean) > 0.2 * leftMean ? 'rgba(255, 0, 0, 0.5)' : 'rgba(10, 99, 15, 0.2)'
+              }),
+              // borderColor: [
+              //   'rgba(255, 99, 132, 1)',
+              // ],
+              borderWidth: 1
             }]
+          },
+          options: {
+            responsive: false,
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
           }
-        }
-      });
-
-      let rightMean = getMean(this.scale.rightTimes);
-      ctx = document.getElementById('right' + this.index);
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: this.scale.rightTimes.map((o, index) => {
-            return index
-          }),
-          datasets: [{
-            label: 'Right hand',
-            data: this.scale.rightTimes.map(x => {
-              return x - rightMean
+        });
+      }
+      if (this.scale.rightTimes) {
+        let rightMean = getMean(this.scale.rightTimes);
+        let ctx = document.getElementById('right' + this.index);
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: this.scale.rightTimes.map((o, index) => {
+              return index
             }),
-            backgroundColor: this.scale.rightTimes.map(t => {
-              return Math.abs(t - rightMean) > 0.2 * rightMean ? 'rgba(255, 0, 0, 0.5)' : 'rgba(10, 99, 15, 0.2)'
-            }),
-            // borderColor: [
-            //   'rgba(255, 99, 132, 1)',
-            // ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: false,
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: false
-              }
+            datasets: [{
+              label: 'Right hand',
+              data: this.scale.rightTimes.map(x => {
+                return x - rightMean
+              }),
+              backgroundColor: this.scale.rightTimes.map(t => {
+                return Math.abs(t - rightMean) > 0.2 * rightMean ? 'rgba(255, 0, 0, 0.5)' : 'rgba(10, 99, 15, 0.2)'
+              }),
+              // borderColor: [
+              //   'rgba(255, 99, 132, 1)',
+              // ],
+              borderWidth: 1
             }]
+          },
+          options: {
+            responsive: false,
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: false
+                }
+              }]
+            }
           }
-        }
-      });
+        });
+      }
     }
   }
 </script>

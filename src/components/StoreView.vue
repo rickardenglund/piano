@@ -1,6 +1,8 @@
 <template>
     <div>
-        <p>Size: {{$store.state.lastNotes.length}}</p>
+        <p>Size: {{$store.state.lastNotes.length}}
+        <button @click="$store.commit('clearNotes')">🗿</button>
+        </p>
     </div>
 </template>
 

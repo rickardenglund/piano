@@ -2,6 +2,8 @@
     <div id="keyboard">
         <button @click="randomNote">randomNote</button>
         <button :key="i" v-for="i in 13" @click="play(i + 59)">{{i + 59}} : {{noteName(i+59)}}</button>
+        <button @click="playScale()">play scale</button>
+        <button @click="playScale(true)">play Double scale</button>
     </div>
 </template>
 
@@ -11,6 +13,13 @@
   export default {
     name: "VirtualKeyboard",
     methods: {
+      playScale(double) {
+        let arr = [0, 2, 4, 5, 7, 9, 11, 12, 11, 9, 7, 5, 4, 2, 0];
+        for (let i in arr) {
+          setTimeout(() => this.play(60 + arr[i]), i * 100);
+          if (double) setTimeout(() => this.play(60 + 12 + arr[i]), i * 100);
+        }
+      },
       noteName(i) {
         return getNoteName(i);
       },

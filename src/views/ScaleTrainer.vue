@@ -2,7 +2,8 @@
     <div>
         <NoteView></NoteView>
         <p>Scale trainer: {{this.playedScales.length}}</p>
-        <CircleOfFifths  id="fifths" :marked="getPlayedScaleNames()"></CircleOfFifths>
+        <label for="double">Two hands: </label><input v-model="double" id="double" type="checkbox"/>
+        <CircleOfFifths id="fifths" :marked="getPlayedScaleNames()"></CircleOfFifths>
         <button @click="scalePlayed(undefined)">Random scale played</button>
         <Scale :key="index" :index="index" v-for="(scale, index) in playedScales" :scale="scale"></Scale>
         <transition name="fade">
@@ -14,7 +15,7 @@
 </template>
 <script>
   import Trainer from '../js/trainer.js'
-  import {getMean, getNoteName} from '../js/utilities'
+  import {getMean, getNoteName, getTime} from '../js/utilities'
   import Scale from "../components/Scale"
   import CircleOfFifths from '../components/CircleOfFifths'
   import NoteView from "../components/NoteView";
@@ -27,11 +28,15 @@
         playedScales: [],
         visible: false,
         cnt: 0,
+        double: false,
       }
     },
     watch: {
       playedNotes() {
         this.detectScale();
+      },
+      double() {
+        this.playedScales = [];
       }
     },
     computed: {
@@ -48,7 +53,12 @@
       },
       detectScale() {
         let trainer = new Trainer();
-        let res = trainer.detectDoubleMajorScale(this.playedNotes);
+        let res = undefined;
+        if (this.double) {
+          res = trainer.detectDoubleMajorScale(this.playedNotes);
+        } else {
+          res = trainer.detectMajorScale(this.playedNotes);
+        }
         if (res) {
           this.$store.commit('clearNotes');
           this.scalePlayed(res);
@@ -83,19 +93,23 @@
       },
       getStatus(scale) {
         let fail = false;
-        let rightMean = getMean(scale.rightTimes);
-        scale.rightTimes.forEach(t => {
-          if (Math.abs(t - rightMean) > 0.2 * rightMean) {
-            fail = true;
-          }
-        });
+        if (scale.rightTimes) {
+          let rightMean = getMean(scale.rightTimes);
+          scale.rightTimes.forEach(t => {
+            if (Math.abs(t - rightMean) > 0.2 * rightMean) {
+              fail = true;
+            }
+          });
+        }
 
-        let leftMean = getMean(scale.leftTimes);
-        scale.leftTimes.forEach(t => {
-          if (Math.abs(t - leftMean) > 0.2 * leftMean) {
-            fail = true;
-          }
-        });
+        if (scale.leftTimes) {
+          let leftMean = getMean(scale.leftTimes);
+          scale.leftTimes.forEach(t => {
+            if (Math.abs(t - leftMean) > 0.2 * leftMean) {
+              fail = true;
+            }
+          });
+        }
 
         return fail ? 'fail' : 'ok';
       }
