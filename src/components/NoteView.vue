@@ -1,12 +1,7 @@
 <template>
   <div id="noteview">
     <canvas id="notes"></canvas>
-    <button @click="multiNotes()">Draw random notes</button>
-    <ol>
-      <li :key="i" v-for="(note, i) in $store.state.lastNotes">
-        {{note}}
-      </li>
-    </ol>
+<!--    <button @click="multiNotes()">Draw random notes</button>-->
   </div>
 
 </template>

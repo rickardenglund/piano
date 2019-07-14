@@ -1,7 +1,8 @@
 <template>
     <div>
+        <NoteView></NoteView>
         <p>Scale trainer: {{this.playedScales.length}}</p>
-            <CircleOfFifths :marked="getPlayedScaleNames()"></CircleOfFifths>
+        <CircleOfFifths  id="fifths" :marked="getPlayedScaleNames()"></CircleOfFifths>
         <button @click="scalePlayed(undefined)">Random scale played</button>
         <Scale :key="index" :index="index" v-for="(scale, index) in playedScales" :scale="scale"></Scale>
         <transition name="fade">
@@ -16,10 +17,11 @@
   import {getMean, getNoteName} from '../js/utilities'
   import Scale from "../components/Scale"
   import CircleOfFifths from '../components/CircleOfFifths'
+  import NoteView from "../components/NoteView";
 
   export default {
     name: 'ScaleTrainer',
-    components: {Scale, CircleOfFifths},
+    components: {NoteView, Scale, CircleOfFifths},
     data() {
       return {
         playedScales: [],
@@ -94,7 +96,7 @@
             fail = true;
           }
         });
-        
+
         return fail ? 'fail' : 'ok';
       }
     }
@@ -117,5 +119,11 @@
 
     .fade-enter, .fade-leave-to {
         opacity: 0;
+    }
+
+    #fifths {
+        position: absolute;
+        top: 10px;
+        right: 20px;
     }
 </style>

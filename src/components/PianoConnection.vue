@@ -1,23 +1,24 @@
 <template>
     <div>
-        <div v-if="status != 'connected'">
-            <button @click="connect">Connect to Bluetooth device</button>
-
+        <div id="pianoConnection">
+            <div v-if="status != 'connected'">
+                <button @click="connect">🛑 Connect to Bluetooth device</button>
+            </div>
+            <div v-else><p>✅ Connected</p></div>
+            <StoreView></StoreView>
         </div>
-        <div v-else><p>Connected</p></div>
-        <div>
-            <VirtualKeyboard></VirtualKeyboard>
-        </div>
+        <VirtualKeyboard></VirtualKeyboard>
     </div>
 </template>
 
 <script>
   import {connect} from "../js/piano";
   import VirtualKeyboard from "./VirtualKeyboard";
+  import StoreView from "./StoreView";
 
   export default {
     name: "PianoConnection",
-    components: {VirtualKeyboard},
+    components: {StoreView, VirtualKeyboard},
     data() {
       return {
         status: 'not connected',
@@ -25,7 +26,10 @@
     },
     methods: {
       connect() {
-        connect(this.charChanged, (status, midiChannel) => {this.status = status; this.$store.commit('setMidiChannel', midiChannel)});
+        connect(this.charChanged, (status, midiChannel) => {
+          this.status = status;
+          this.$store.commit('setMidiChannel', midiChannel)
+        });
       },
       charChanged(event) {
         let value = event.target.value;
@@ -55,5 +59,13 @@
 </script>
 
 <style scoped>
+    #pianoConnection {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
+    #pianoConnection > div {
+        margin-left: 10px;
+    }
 </style>
