@@ -1,6 +1,6 @@
 <template>
     <div id="keyboard">
-        <button @click="randomNote">randomNote</button>
+        <button @click="play()">randomNote</button>
         <button :key="i" v-for="i in 13" @click="play(i + 59)">{{i + 59}} : {{noteName(i+59)}}</button>
         <button @click="playScale()">scale</button>
         <button @click="playScale(true)">Two hand scale</button>
@@ -35,23 +35,17 @@
         return getNoteName(i);
       },
       play(i) {
+        if (!i) i = Math.floor(Math.random() * 60) + 30;
+        let time = getTime();
         let note = {
           pitch: i,
-          playTime: getTime(),
+          playTime: time,
+          midiTime: time % 8196,
           velocity: Math.floor(Math.random() * 100 + 1),
           channel: 1,
         };
         this.$store.commit('newNote', note)
       },
-      randomNote() {
-        let note = {
-          pitch: Math.floor(Math.random() * 60 + 30),
-          playTime: getTime(),
-          velocity: Math.floor(Math.random() * 100 + 1),
-          channel: 1,
-        };
-        this.$store.commit('newNote', note)
-      }
     }
   }
 </script>
@@ -61,6 +55,7 @@
         background-color: rebeccapurple;
         position: fixed;
         bottom: 0;
+        left: 0;
         width: 100%;
         z-index: 10;
     }
