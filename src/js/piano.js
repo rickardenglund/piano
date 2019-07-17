@@ -25,7 +25,6 @@ export function connect(callback, connectedCallback) {
               // eslint-disable-next-line no-console
               console.log('>> Characteristic: ' + characteristic.uuid + ' ' +
                                                         getSupportedProperties(characteristic));
-              console.log(characteristic);
               if (characteristic.uuid == '7772e5db-3868-4112-a1a9-f2669d106bf3') {
                 characteristic.startNotifications().then(() => {
                   // eslint-disable-next-line no-console
@@ -92,12 +91,10 @@ export function stopNote(note, midiChannel) {
 
 export function setInstrument(instrument, midiChannel) {
   let msg_on = new Uint8Array([0x80, 0x80, 0xc3, 0x00, instrument]);
-  console.log(msg_on);
   midiChannel.writeValue(msg_on);
 }
 
 export function allNoteOff(midiChannel) {
   let msg_on = new Uint8Array([0x80, 0x80, 0xb3, 120, 0]);
-  console.log(msg_on);
   midiChannel.writeValue(msg_on);
 }
