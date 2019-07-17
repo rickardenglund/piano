@@ -26,13 +26,13 @@ export default class Trainer {
   }
 
   isDoubleMajorScale(notes) {
-    if (notes.length < 2 * this.majorScaleOffsets.length) return false;
-    notes = notes.slice(0, this.majorScaleOffsets.length * 2);
+    if (notes.length < 2 * this.twoOctavemajorScaleOffsets.length) return false;
+    notes = notes.slice(0, this.twoOctavemajorScaleOffsets.length * 2);
 
     let pitches = notes.map((note) => note.pitch);
     let tonic = pitches[0];
-    for (let i = 0; i < this.majorScaleOffsets.length; i++) {
-      if ( !((pitches[i*2] === tonic + this.majorScaleOffsets[i] || pitches[i*2 + 1] === tonic + this.majorScaleOffsets[i])
+    for (let i = 0; i < this.twoOctavemajorScaleOffsets.length; i++) {
+      if ( !((pitches[i*2] === tonic + this.twoOctavemajorScaleOffsets[i] || pitches[i*2 + 1] === tonic + this.twoOctavemajorScaleOffsets[i])
               && Trainer.sameNote(pitches[i*2], pitches[i*2+1]))
             ) {
         return false;
@@ -63,14 +63,14 @@ export default class Trainer {
   }
 
   isMajorScale(notes) {
-    if (notes.length < this.majorScaleOffsets.length) return false;
+    if (notes.length < this.twoOctavemajorScaleOffsets.length) return false;
 
-    notes = notes.slice(0, this.majorScaleOffsets.length);
+    notes = notes.slice(0, this.twoOctavemajorScaleOffsets.length);
 
     let tonic = notes[0].pitch;
 
     for (let i = 1; i < notes.length; i++) {
-      if (notes[i].pitch != tonic + this.majorScaleOffsets[i]) {
+      if (notes[i].pitch != tonic + this.twoOctavemajorScaleOffsets[i]) {
         return false;
       }
     }
@@ -91,5 +91,7 @@ export default class Trainer {
   }
 
   majorScaleOffsets = [0, 2, 4, 5, 7, 9, 11, 12, 11, 9, 7, 5, 4, 2, 0];
+  twoOctavemajorScaleOffsets = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 23, 21, 19, 17, 16, 14, 12, 11, 9, 7, 5, 4, 2, 0];
+
 
 }

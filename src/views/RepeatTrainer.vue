@@ -53,7 +53,7 @@
         // eslint-disable-next-line no-console
         console.log(s);
         this.sequence = s;
-        // this.$emit('play', this.sequence);
+        // this.$emit('setInstrument', this.sequence);
         playNotes(this.sequence, this.$store.state.midiChannel);
 
         this.message = "Play the sequence";

@@ -5,6 +5,7 @@
       | <router-link to="/">View</router-link> |
       <router-link to="/repeatTrainer">Repeat Trainer</router-link> |
       <router-link to="/scaleTrainer">Scales</router-link> |
+      <router-link to="/playback">Playback</router-link> |
     </div>
     <router-view/>
   </div>

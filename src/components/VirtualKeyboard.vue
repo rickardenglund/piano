@@ -4,6 +4,8 @@
         <button :key="i" v-for="i in 13" @click="play(i + 59)">{{i + 59}} : {{noteName(i+59)}}</button>
         <button @click="playScale()">play scale</button>
         <button @click="playScale(true)">play Double scale</button>
+<!--        <button @click="playTwoOctavesScale()">Play Two Octaves Double scale</button>-->
+        <button @click="playTwoOctavesScale(true)">Play Two Octaves Double scale</button>
     </div>
 </template>
 
@@ -16,14 +18,21 @@
       playScale(double) {
         let arr = [0, 2, 4, 5, 7, 9, 11, 12, 11, 9, 7, 5, 4, 2, 0];
         for (let i in arr) {
-          setTimeout(() => this.play(60 + arr[i]), i * 100);
-          if (double) setTimeout(() => this.play(60 + 12 + arr[i]), i * 100);
+          setTimeout(() => this.setInstrument(60 + arr[i]), i * 100);
+          if (double) setTimeout(() => this.setInstrument(60 + 12 + arr[i]), i * 100);
+        }
+      },
+      playTwoOctavesScale(double) {
+        let arr = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 23, 21, 19, 17, 16, 14, 12, 11, 9, 7, 5, 4, 2, 0];
+        for (let i in arr) {
+          setTimeout(() => this.setInstrument(60 + arr[i]), i * 100);
+          if (double) setTimeout(() => this.setInstrument(60 + 12 + arr[i]), i * 100);
         }
       },
       noteName(i) {
         return getNoteName(i);
       },
-      play(i) {
+      setInstrument(i) {
         let note = {
           pitch: i,
           playTime: getTime(),

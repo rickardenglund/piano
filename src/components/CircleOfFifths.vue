@@ -44,7 +44,7 @@
     },
     mounted() {
       for (let i = 0; i < this.$el.children.length; i++) {
-        this.$el.children[i].style.top = this.getY(Math.PI / 6 * i, 100) + 100 + 'px';
+        this.$el.children[i].style.top = this.getY(Math.PI / 6 * i, 100) + 90 + 'px';
         this.$el.children[i].style.left = this.getX(Math.PI / 6 * i, 100) + 115 + 'px';
       }
     }

@@ -26,9 +26,11 @@
     },
     methods: {
       connect() {
-        connect(this.charChanged, (status, midiChannel) => {
+        connect(this.charChanged, (status, midiChannel, server) => {
           this.status = status;
-          this.$store.commit('setMidiChannel', midiChannel)
+          this.$store.commit('setMidiChannel', midiChannel);
+          this.$store.commit('setMidiServer', server);
+          setInterval(() => {this.status = server.connected ? 'connected' : 'disconnected'}, 1000)
         });
       },
       charChanged(event) {
@@ -47,7 +49,9 @@
               channel,
             };
             this.$store.commit('newNote', note)
-          }
+          } //else {//if (value.getUint8(pos + 2) >> 4 == 0xc) { // Note on
+          //   console.log(value.buffer);
+          // }
         }
       },
       getTime() {

@@ -1,4 +1,5 @@
 export function connect(callback, connectedCallback) {
+  let device = undefined;
   navigator.bluetooth.requestDevice({
     filters: [{
       services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
@@ -8,6 +9,7 @@ export function connect(callback, connectedCallback) {
     .then(server => {
       // eslint-disable-next-line no-console
       console.log('Getting Services...');
+      device = server;
       return server.getPrimaryServices();
     })
     .then(services => {
@@ -23,12 +25,13 @@ export function connect(callback, connectedCallback) {
               // eslint-disable-next-line no-console
               console.log('>> Characteristic: ' + characteristic.uuid + ' ' +
                                                         getSupportedProperties(characteristic));
+              console.log(characteristic);
               if (characteristic.uuid == '7772e5db-3868-4112-a1a9-f2669d106bf3') {
                 characteristic.startNotifications().then(() => {
                   // eslint-disable-next-line no-console
                   console.log('> Notifications started');
                   characteristic.addEventListener('characteristicvaluechanged', callback);
-                  connectedCallback('connected', characteristic);
+                  connectedCallback('connected', characteristic, device);
                   return characteristic;
                 });
               }
@@ -73,10 +76,10 @@ export function play(note, midiChannel) {
 export function playNoteIn(note, time, midiChannel) {
   setTimeout(() => play(note, midiChannel), time);
 }
-export function playNote(note, midiChannel) {
-  let msg_on = new Uint8Array([0x80, 0x80, 0x93, note, 0x1f]);
+export function playNote(note, midiChannel, velocity) {
+  if (!velocity) velocity = 0x1f;
+  let msg_on = new Uint8Array([0x80, 0x80, 0x93, note, velocity]);
   midiChannel.writeValue(msg_on);
-
 }
 export function stopNote(note, midiChannel) {
   let msg_off = new Uint8Array([0x80, 0x80, 0x83, note, 0xff]);
@@ -85,4 +88,16 @@ export function stopNote(note, midiChannel) {
         // eslint-disable-next-line no-console
         console.log(e)
       })
+}
+
+export function setInstrument(instrument, midiChannel) {
+  let msg_on = new Uint8Array([0x80, 0x80, 0xc3, 0x00, instrument]);
+  console.log(msg_on);
+  midiChannel.writeValue(msg_on);
+}
+
+export function allNoteOff(midiChannel) {
+  let msg_on = new Uint8Array([0x80, 0x80, 0xb3, 120, 0]);
+  console.log(msg_on);
+  midiChannel.writeValue(msg_on);
 }

@@ -1,12 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     lastNotes: [],
     midiChannel: undefined,
+    midiServer: undefined,
+  },
+  getters: {
+    isConnected(state) {
+      return state.midiServer && state.midiServer.connected;
+    }
   },
   mutations: {
     newNote(state, note) {
@@ -17,6 +23,9 @@ export default new Vuex.Store({
     },
     setMidiChannel(state, midiChannel) {
       state.midiChannel = midiChannel;
+    },
+    setMidiServer(state, server) {
+      state.midiServer = server;
     }
   },
   actions: {

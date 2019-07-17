@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import RepeatTrainer from './views/RepeatTrainer.vue'
 import noteview from './views/View.vue'
 import ScaleTrainer from "./views/ScaleTrainer";
+import Playback from "./views/Playback";
 
 Vue.use(Router);
 
@@ -22,6 +23,10 @@ export default new Router({
       path: '/scaleTrainer',
       name: 'scaleTrainer',
       component: ScaleTrainer
+    }, {
+      path: '/playback',
+      name: 'Playback',
+      component: Playback
     },
     // {
     //   path: '/about',
