@@ -11,7 +11,6 @@
 
 <script>
   import {getNoteName, getTime} from "../js/utilities";
-  import {play} from "../js/piano";
 
   export default {
     name: "VirtualKeyboard",
