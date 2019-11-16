@@ -16,6 +16,10 @@ export default new Vuex.Store({
   },
   mutations: {
     newNote(state, note) {
+      if (state.lastNotes.length > 1000) {
+        state.lastNotes = state.lastNotes.slice(-500)
+      }
+
       state.lastNotes.push(note)
     },
     clearNotes(state) {

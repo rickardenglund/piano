@@ -2,14 +2,14 @@
     <div class="home">
         <h1>View</h1>
         <NoteView></NoteView>
-        <ul>
-            <li :key="index" v-for="(note, index) in $store.state.lastNotes">
-                {{index}}
-                <strong>PlayTime:</strong> {{note.playTime}}
-                <strong>diff:</strong> {{(note.playTime % 8196) + 8196 - note.midiTime}}
-                {{note.playTime % 8196}}
-            </li>
-        </ul>
+<!--        <ul>-->
+<!--            <li :key="index" v-for="(note, index) in $store.state.lastNotes">-->
+<!--                {{index}}-->
+<!--                <strong>PlayTime:</strong> {{note.playTime}}-->
+<!--                <strong>diff:</strong> {{(note.playTime % 8196) + 8196 - note.midiTime}}-->
+<!--                {{note.playTime % 8196}}-->
+<!--            </li>-->
+<!--        </ul>-->
     </div>
 </template>
 
