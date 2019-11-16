@@ -1,7 +1,11 @@
 <template>
   <div id="noteview">
-    <canvas id="notes"></canvas>
-<!--    <button @click="multiNotes()">Draw random notes</button>-->
+    <svg :viewBox="`0 0 ${width} ${height}`" width="100%">
+      <rect v-for="i in 109-21" :key="i" :x="i*(width/N) - (width/N/2)" y="0" width="10" :height="height" :fill="isBlack(i)?'black':'white'" stroke-width=".5" stroke="gray"/>
+      <circle v-for="note in notes" :key="note.playTime.toString() + note.pitch" :r="width/N/2" :cx="(1+ note.pitch - LOW_CUT)*width/N" :cy="height - (now - note.playTime)/20" fill="green"/>
+    </svg>
+    <p>{{N}} {{notes.length}}</p>
+    <button @click="multiNotes()">Draw random notes</button>
   </div>
 
 </template>
@@ -11,7 +15,11 @@
     name: "NoteView",
     data() {
       return {
-        drawingActive: true
+        drawingActive: true,
+        nextKey: 1,
+        height: 500,
+        width: 1000,
+        now: this.getTime()
       }
     },
     mounted() {
@@ -24,7 +32,13 @@
     computed: {
       notes() {
         return this.$store.state.lastNotes.slice(-40);
-      }
+      },
+      N() {
+        return 109 - this.LOW_CUT;
+      },
+      LOW_CUT() {
+        return 21;
+      },
     },
     watch: {
       // notes() {
@@ -32,60 +46,15 @@
       // }
     },
     methods: {
+      key()  {
+        return this.nextKey++
+      },
       getTime() {
         let date = new Date();
         return date.getTime();
       },
       draw() {
-        if (!this.drawingActive) return;
-        let canvas = document.getElementById("notes");
-        let ctx = canvas.getContext("2d");
-        canvas.width = 1000;
-        canvas.height = 400;
-        let width = canvas.width;
-        let height = canvas.height;
-        let now = this.getTime();
-
-        const LOW_CUT = 21;
-        const N = 109 - LOW_CUT;
-
-        const w = Math.floor(width / N);
-        // const h = Math.floor(height / this.notes.length);
-
-        ctx.fillStyle = "#aaa";
-        ctx.clearRect(0, 0, width, height);
-
-
-        ctx.lineWidth = 0.2;
-        for (let i = 0; i <= N; i++) {
-          if (this.isBlack(i)) {
-            ctx.fillStyle = '#aaa';
-          } else {
-            ctx.fillStyle = 'white';
-          }
-          ctx.fillRect(i * w - w / 2, 0, w, height);
-          ctx.strokeRect(i * w - w / 2, 0, w, height);
-          // ctx.beginPath();
-          // ctx.moveTo(i * w - w/2, 0);
-          // ctx.lineTo(i*w - w/2, height);
-          // ctx.closePath();
-          // ctx.stroke();
-        }
-
-        for (let i = 0; i < this.notes.length; i++) {
-          let pitch = this.notes[i].pitch;
-          let startTime = this.notes[i].playTime;
-          let velocityFactor = this.notes[i].velocity / 125;
-          // ctx.fillRect(w * (pitch - LOW_CUT), (height - (now - startTime)/10), w, h);
-          ctx.beginPath();
-          ctx.arc(w * ((pitch + 1) - LOW_CUT), (height - (now - startTime) / 20), (w / 2), 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.lineWidth = 10 * velocityFactor;
-          ctx.strokeStyle = '#333'
-          ctx.stroke();
-          ctx.fillStyle = '#cxaa';
-          ctx.fill()
-        }
+        this.now = this.getTime()
 
         window.requestAnimationFrame(this.draw)
       },
@@ -120,5 +89,9 @@
 
   p {
     display: inline;
+  }
+
+  svg {
+    border: 2px solid gray;
   }
 </style>
