@@ -1,10 +1,9 @@
 <template>
   <div id="noteview">
-    <svg :viewBox="`0 0 ${width} ${height}`" width="100%">
+    <svg :viewBox="`0 0 ${width} ${height}`">
       <rect v-for="i in 109-21" :key="i" :x="i*(width/N) - (width/N/2)" y="0" width="10" :height="height" :fill="isBlack(i)?'black':'white'" stroke-width=".5" stroke="gray"/>
       <circle v-for="note in notes" :key="note.playTime.toString() + note.pitch" :r="width/N/2" :cx="(1+ note.pitch - LOW_CUT)*width/N" :cy="height - (now - note.playTime)/20" fill="green"/>
     </svg>
-    <p>{{N}} {{notes.length}}</p>
     <button @click="multiNotes()">Draw random notes</button>
   </div>
 
@@ -92,6 +91,7 @@
   }
 
   svg {
+    width:100%;
     border: 2px solid gray;
   }
 </style>

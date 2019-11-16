@@ -1,7 +1,7 @@
 <template>
     <div>
+        <h1>Scale trainer: {{this.playedScales.length}}</h1>
         <NoteView></NoteView>
-        <p>Scale trainer: {{this.playedScales.length}}</p>
         <label for="double">Two hands 🙌: </label><input v-model="twoHands" id="double" type="checkbox"/><br/>
         <label for="twoOctaves">Two Octaves 𝄞: </label><input v-model="twoOctaves" id="twoOctaves" type="checkbox"/>
         <CircleOfFifths id="fifths" :marked="getPlayedScaleNames()"></CircleOfFifths>
